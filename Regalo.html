@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ctrl + Alt + Shift 💚</title>
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:#1b1b1b;
+    font-family:'Segoe UI', sans-serif;
+    color:#f5f3ef;
+    overflow:hidden;
+}
+
+/* Intro text */
+.intro{
+    position:absolute;
+    top:40px;
+    font-size:18px;
+    letter-spacing:2px;
+    opacity:.8;
+    animation:fadeIn 2s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:.8}
+}
+
+/* HEART KEYS */
+.heart{
+    position:relative;
+    width:320px;
+    height:260px;
+}
+
+.key{
+    position:absolute;
+    width:110px;
+    height:65px;
+    background:#f5f3ef;
+    border-radius:10px;
+    box-shadow:0 6px 0 #b7b2a8;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    font-weight:600;
+    color:#2e2e2e;
+    transition:all .1s ease;
+    user-select:none;
+}
+
+.key:active{
+    transform:translateY(6px);
+    box-shadow:0 0 0 #b7b2a8;
+}
+
+.ctrl{ top:50px; left:30px; }
+.alt{ top:50px; right:30px; }
+.shift{ bottom:20px; left:105px; }
+
+/* MODAL */
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.88);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    pointer-events:none;
+    transition:.4s ease;
+}
+
+.modal.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.modal-content{
+    background:#f5f3ef;
+    padding:20px;
+    border-radius:20px;
+    max-width:360px;
+    text-align:center;
+    animation:pop .4s ease;
+    position:relative;
+}
+
+@keyframes pop{
+    from{ transform:scale(.7); opacity:0;}
+    to{ transform:scale(1); opacity:1;}
+}
+
+.modal img{
+    width:100%;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+
+.text{
+    color:#2e2e2e;
+    font-size:15px;
+}
+
+.close{
+    position:absolute;
+    top:10px;
+    right:15px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#2e2e2e;
+}
+
+/* Floating hearts */
+.heart-float{
+    position:absolute;
+    color:#6a8f7b;
+    font-size:20px;
+    animation:float 3s infinite ease-in;
+}
+
+@keyframes float{
+    0%{ transform:translateY(0); opacity:1;}
+    100%{ transform:translateY(-100px); opacity:0;}
+}
+
+/* FINAL MESSAGE */
+.final{
+    position:absolute;
+    bottom:40px;
+    font-size:20px;
+    opacity:0;
+    transition:1s ease;
+    color:#6a8f7b;
+    letter-spacing:2px;
+}
+.final.show{
+    opacity:1;
+}
+</style>
+</head>
+<body>
+
+<div class="intro">Ctrl + Alt + Shift para activar mi corazón…</div>
+
+<div class="heart">
+    <div class="key ctrl" onclick="openModal('control')">Ctrl</div>
+    <div class="key alt" onclick="openModal('alt')">Alt</div>
+    <div class="key shift" onclick="openModal('shift')">Shift</div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="close" onclick="closeModal()">X</div>
+        <img id="modal-img">
+        <div class="text" id="modal-text"></div>
+    </div>
+</div>
+
+<div class="final" id="finalMessage">Felices 4 meses mi amor 💚</div>
+
+<!-- Keyboard click sound -->
+<audio id="clickSound">
+<source src="https://www.soundjay.com/mechanical/keyboard-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Instrumental romantic music -->
+<audio id="bgMusic" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5b7df5b2d4.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+const modalText = document.getElementById("modal-text");
+const clickSound = document.getElementById("clickSound");
+const bgMusic = document.getElementById("bgMusic");
+const finalMessage = document.getElementById("finalMessage");
+
+let opened = {
+    control:false,
+    alt:false,
+    shift:false
+};
+
+document.body.addEventListener("click", ()=>{
+    bgMusic.play();
+},{once:true});
+
+function openModal(type){
+    clickSound.currentTime=0;
+    clickSound.play();
+
+    if(type==="control"){
+        modalImg.src="Control.jpg";
+        modalText.innerHTML="💚 Por que nunca nos falten las risas, mejor si es a tu lado.. 💚";
+        opened.control=true;
+    }
+    if(type==="alt"){
+        modalImg.src="Alt.jpg";
+        modalText.innerHTML="💚 Por que la pereza aun siendo un pecado se vuelva algo bonito.. 💚";
+        opened.alt=true;
+    }
+    if(type==="shift"){
+        modalImg.src="Shift.jpg";
+        modalText.innerHTML="💚 Y porque pueda pasar toda mi vida mirando a tus hermosos ojos, esos que me Dan la vida. 💚";
+        opened.shift=true;
+    }
+
+    modal.classList.add("active");
+    createHearts();
+    checkFinal();
+}
+
+function closeModal(){
+    modal.classList.remove("active");
+}
+
+function createHearts(){
+    for(let i=0;i<6;i++){
+        const heart=document.createElement("div");
+        heart.classList.add("heart-float");
+        heart.innerHTML="❤";
+        heart.style.left=Math.random()*300+"px";
+        heart.style.bottom="0px";
+        document.querySelector(".modal-content").appendChild(heart);
+        setTimeout(()=>heart.remove(),3000);
+    }
+}
+
+function checkFinal(){
+    if(opened.control && opened.alt && opened.shift){
+        setTimeout(()=>{
+            finalMessage.classList.add("show");
+        },800);
+    }
+}
+</script>
+
+</body>
+</html>
