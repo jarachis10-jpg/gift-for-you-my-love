@@ -3,8 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <title>Ctrl + Alt + Shift 💚</title>
-<style>
-body{
+<style> /* START SCREEN */
+#startScreen{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#1b1b1b;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+#startButton{
+    padding:20px 40px;
+    font-size:18px;
+    border:none;
+    border-radius:40px;
+    background:#6a8f7b;
+    color:white;
+    cursor:pointer;
+    transition:.3s ease;
+    letter-spacing:1px;
+}
+
+#startButton:hover{
+    transform:scale(1.05);
+    background:#7da895;
+}
+body{<div id="startScreen">
+    <button id="startButton">💚 Toca aquí para activar mi corazón 💚</button>
+</div>
     margin:0;
     height:100vh;
     display:flex;
@@ -102,9 +133,19 @@ body{
 }
 
 .modal img{
-    width:100%;
+    width:80%;
+    max-width:260px;
+    height:auto;
     border-radius:15px;
-    margin-bottom:15px;
+    display:block;
+    margin:0 auto 15px auto;
+}
+
+@media (max-width: 600px){
+    .modal img{
+        width:95%;
+        max-width:300px;
+    }
 }
 
 .text{
@@ -176,10 +217,24 @@ body{
 
 <!-- Instrumental romantic music -->
 <audio id="bgMusic" loop>
-<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5b7df5b2d4.mp3" type="audio/mpeg">
+    <source src="La Vie En Rose.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
+
+startButton.addEventListener("click", () => {
+    bgMusic.volume = 0.4;
+    bgMusic.play();
+    
+    startScreen.style.opacity = "0";
+    startScreen.style.transition = "1s ease";
+    
+    setTimeout(()=>{
+        startScreen.style.display = "none";
+    },1000);
+});
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modal-img");
 const modalText = document.getElementById("modal-text");
@@ -258,3 +313,4 @@ function checkFinal(){
 </body>
 
 </html>
+
