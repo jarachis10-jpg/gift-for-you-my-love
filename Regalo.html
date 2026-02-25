@@ -171,7 +171,7 @@ body{
 
 <!-- Keyboard click sound -->
 <audio id="clickSound">
-<source src="https://www.soundjay.com/mechanical/keyboard-1.mp3" type="audio/mpeg">
+<source src="La Vie En Rose.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Instrumental romantic music -->
@@ -193,11 +193,19 @@ let opened = {
     shift:false
 };
 
-document.body.addEventListener("click", ()=>{
-    bgMusic.play();
-},{once:true});
+let musicStarted = false;
+
+function startMusic(){
+    if(!musicStarted){
+        bgMusic.volume = 0.4; // volumen suave
+        bgMusic.play();
+        musicStarted = true;
+    }
+}
 
 function openModal(type){
+    startMusic();
+    
     clickSound.currentTime=0;
     clickSound.play();
 
@@ -248,4 +256,5 @@ function checkFinal(){
 </script>
 
 </body>
+
 </html>
